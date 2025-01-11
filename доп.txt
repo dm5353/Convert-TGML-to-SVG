@@ -1,0 +1,40 @@
+    if element_type == 'ellipse':
+        cx = float(attribs.get("left", 0)) + float(attribs.get("width", 0)) / 2
+        cy = float(attribs.get("top", 0)) + float(attribs.get("height", 0)) / 2
+        rx = float(attribs.get("width", 0)) / 2
+        ry = float(attribs.get("height", 0)) / 2
+
+        color = attribs.get("fill", "none")
+        opacity = 1.0
+        print("Исход: " + color)
+        if color.startswith("#") and len(color) == 9:  # Format #AARRGGBB
+            opacity = int(color[1:3], 16) / 255  # Convert alpha to float between 0 and 1
+            rgba_color = f"#{color[3:]}"  # Remove alpha for CSS color
+            fill = color = rgba_color
+            opacity = opacity
+        else:  # Handle case without alpha
+            fill = color
+
+        transform = process_element_child(element, parent_svg, common_attribs)
+        etree.SubElement(parent_svg, "ellipse", {
+            **common_attribs, "fill": str(fill), "opacity": str(opacity),"cx": str(cx), "cy": str(cy), "rx": str(rx), "ry": str(ry), "transform" : transform
+        })
+
+
+
+
+
+    if element_type == 'script':
+        script_content = element.text if element.text else attribs.get("content", "")
+        script_attribs = {
+            "type": attribs.get("type", "text/ecmascript"),  # Устанавливаем тип скрипта по умолчанию
+            "id": attribs.get("name", "")  # Используем имя в качестве id скрипта
+        }
+        etree.SubElement(parent_svg, "script", script_attribs).text = script_content
+
+    if element_type == 'metadata':
+        metadata_attribs = {
+            "Name": attribs.get("name", "none"),  # Устанавливаем тип скрипта по умолчанию
+            "Value": attribs.get("value", "none")  # Используем имя в качестве id скрипта
+        }
+        etree.SubElement(parent_svg, "metadata", metadata_attribs)
