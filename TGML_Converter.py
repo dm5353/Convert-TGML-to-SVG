@@ -365,7 +365,7 @@ def process_files(input_folder, output_folder):
                 print(f"Ошибка с файлом {filename}: {e}")
 
 if __name__ == "__main__":
-    input_folder = "C:/Users/Shitfrombitch/Desktop/1"
-    output_folder = "C:/Users/Shitfrombitch/Desktop/3"
+    input_folder = ""
+    output_folder = ""
 
     process_files(input_folder, output_folder)
